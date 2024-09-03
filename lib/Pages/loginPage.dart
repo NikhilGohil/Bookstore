@@ -33,14 +33,14 @@ class _LoginpageState extends State<Loginpage> {
           Image.asset('assets/logo-dark.png'),
           Column(
             children: [
-              Inputtextfieldcomp(controller: _emailController, hintText: "Email"),
-              Inputtextfieldcomp(controller: _passwordController, hintText: "Password", password: true),
+              Inputtextfieldcomp(controller: _emailController, hintText: "Email", showShadow: true,),
+              Inputtextfieldcomp(controller: _passwordController, hintText: "Password", password: true, showShadow: true,),
             ],
           ),
           Column(
             children: [
               ButtonComp(title: 'Login', buttonAction: () {
-                _signinsignup.signIn(_emailController.text, _passwordController.text);
+                _signinsignup.signIn(_emailController.text, _passwordController.text, context);
               }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

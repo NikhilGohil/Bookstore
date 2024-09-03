@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'package:bookstore/Providers/bookCountProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:bookstore/Data Layer/bookstoreAPIcall.dart';
 import 'package:bookstore/Pages/booksGridViewComp.dart';
@@ -91,12 +93,19 @@ class _MainpageState extends State<Mainpage> {
                         fontSize: 30,
                         fontWeight: FontWeight.bold),
                   ),
-                  Text(
-                    "($bookCount items )",
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Consumer<Bookcountprovider>(
+                      builder: (context, model, child) {
+                        return Text(
+                        "(${model.count} items )",
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

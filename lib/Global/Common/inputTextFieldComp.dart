@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class Inputtextfieldcomp extends StatefulWidget {
   TextEditingController controller;
-  bool password;
+  bool password, showShadow;
   String hintText;
   Inputtextfieldcomp(
       {super.key,
       required this.controller,
       this.password = false,
-      required this.hintText});
+      required this.hintText,
+      this.showShadow = false});
 
   @override
   State<Inputtextfieldcomp> createState() => _InputtextfieldcompState();
@@ -45,29 +46,30 @@ class _InputtextfieldcompState extends State<Inputtextfieldcomp> {
           cursorColor: Colors.grey,
           obscureText: passwordView,
           decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: widget.hintText,
-            hintStyle: const TextStyle(color: Colors.grey),
-            enabledBorder: borderStyle,
-            focusedBorder: borderStyle,
-            suffixIcon: widget.password 
-            ? passwordView 
-              ? IconButton(
-                  icon: const Icon(Icons.visibility), 
-                  onPressed: () {
-                    setState(() {
-                      passwordView = !passwordView;
-                    });
-                  },)
-              : IconButton(icon: const Icon(Icons.visibility_off),
-              onPressed: () {
-                setState(() {
-                  passwordView = !passwordView;
-                });
-              })
-            : null
-          ),
+              labelStyle: TextStyle(color: Colors.grey),
+              labelText: widget.hintText,
+              fillColor: Colors.white,
+              filled: true,
+              enabledBorder: borderStyle,
+              focusedBorder: borderStyle,
+              suffixIcon: widget.password
+                  ? passwordView
+                      ? IconButton(
+                          icon: const Icon(Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              passwordView = !passwordView;
+                            });
+                          },
+                        )
+                      : IconButton(
+                          icon: const Icon(Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              passwordView = !passwordView;
+                            });
+                          })
+                  : null),
         ),
       ),
     );

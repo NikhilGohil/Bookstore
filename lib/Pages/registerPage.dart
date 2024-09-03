@@ -25,7 +25,7 @@ class _RegisterpageState extends State<Registerpage> {
       statusBarIconBrightness: Brightness.dark,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
-    
+
     Signinsignup _signinsignup = Signinsignup();
 
     return Scaffold(
@@ -34,25 +34,55 @@ class _RegisterpageState extends State<Registerpage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(height: 84,),
-            Image.asset('assets/logo-dark.png', width: 124, height: 115,),
-            SizedBox(height: 40,),
+            SizedBox(
+              height: 84,
+            ),
+            Image.asset(
+              'assets/logo-dark.png',
+              width: 124,
+              height: 115,
+            ),
+            SizedBox(
+              height: 40,
+            ),
             Column(
               children: [
-                Inputtextfieldcomp(controller: _nameController, hintText: "Full Name"),
-                Inputtextfieldcomp(controller: _emailController, hintText: "Email"),
-                Inputtextfieldcomp(controller: _passwordController, hintText: "Password"),
-                Inputtextfieldcomp(controller: _phoneController, hintText: "Phone"),
+                Inputtextfieldcomp(
+                  controller: _nameController,
+                  hintText: "Full Name",
+                  showShadow: true,
+                ),
+                Inputtextfieldcomp(
+                  controller: _emailController,
+                  hintText: "Email",
+                  showShadow: true,
+                ),
+                Inputtextfieldcomp(
+                  controller: _passwordController,
+                  hintText: "Password",
+                  showShadow: true,
+                ),
+                Inputtextfieldcomp(
+                  controller: _phoneController,
+                  hintText: "Phone",
+                  showShadow: true,
+                ),
               ],
             ),
-            SizedBox(height: 40,),
+            SizedBox(
+              height: 40,
+            ),
             Column(
               children: [
                 ButtonComp(
-                  title: 'Create Account', 
-                  buttonAction: () {
-                    _signinsignup.signUp(_nameController.text, _emailController.text, _passwordController.text, _phoneController.text);
-                  }),
+                    title: 'Create Account',
+                    buttonAction: () {
+                      _signinsignup.signUp(
+                          _nameController.text,
+                          _emailController.text,
+                          _passwordController.text,
+                          _phoneController.text);
+                    }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -67,8 +97,7 @@ class _RegisterpageState extends State<Registerpage> {
                       child: Text(
                         'Login here',
                         style: TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.bold
-                        ),
+                            color: Colors.grey, fontWeight: FontWeight.bold),
                       ),
                     )
                   ],

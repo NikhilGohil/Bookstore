@@ -9,7 +9,7 @@ class Onboarding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemNavigationBarColor:brown,
+      systemNavigationBarColor: brown,
       statusBarColor: brown,
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarIconBrightness: Brightness.light,
@@ -18,20 +18,46 @@ class Onboarding extends StatelessWidget {
       backgroundColor: brown,
       body: Column(
         children: [
-          SizedBox(height: 181,),
+          SizedBox(
+            height: 181,
+          ),
           Image.asset('assets/logo.png'),
-          SizedBox(height: 40,),
+          SizedBox(
+            height: 40,
+          ),
           Column(
             children: [
-              Text("Welcome", style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.w600),),
-              Text("Read without limits", style: TextStyle(fontSize: 20, color: Colors.white),),
+              Text(
+                "Welcome",
+                style: TextStyle(
+                    fontSize: 50,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600),
+              ),
+              Text(
+                "Read without limits",
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
             ],
           ),
-          SizedBox(height: 40,),
+          SizedBox(
+            height: 40,
+          ),
           Column(
             children: [
-              ButtonComp(title: "Create Account", buttonColorWhite: true, buttonAction: (){Navigator.popAndPushNamed(context, 'register');},),
-              ButtonComp(title: "Log In as Guest", buttonAction: () {Navigator.popAndPushNamed(context, 'login');},),
+              ButtonComp(
+                title: "Create Account",
+                buttonColorWhite: true,
+                buttonAction: () {
+                  Navigator.popAndPushNamed(context, 'register');
+                },
+              ),
+              ButtonComp(
+                title: "Log In as Guest",
+                buttonAction: () {
+                  Navigator.popAndPushNamed(context, 'login');
+                },
+              ),
             ],
           )
         ],

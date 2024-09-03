@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:bookstore/Data Layer/bookstoreAPIcall.dart';
+import 'package:bookstore/Providers/bookCountProvider.dart';
 import 'package:bookstore/Global/Common/colorPalet.dart';
 import 'package:bookstore/Global/Models/bookModel.dart';
 
@@ -12,12 +15,19 @@ class Booksgridviewcomp extends StatefulWidget {
 }
 
 class _BooksgridviewcompState extends State<Booksgridviewcomp> {
+  Bookstoreapicall _bookstoreapicall = Bookstoreapicall();
+  @override
+  void initState() {
+    final _bookCount = Provider.of<Bookcountprovider>(context, listen: false);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    int bookLen = widget.booksData.length;
     return GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: widget.booksData.isEmpty ? 6 : widget.booksData.length,
+        itemCount: widget.booksData.isEmpty ? 6 : bookLen,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 10,
@@ -25,6 +35,7 @@ class _BooksgridviewcompState extends State<Booksgridviewcomp> {
           childAspectRatio: 0.6,
         ),
         itemBuilder: (context, index) {
+          Bookmodel? book = bookLen != 0 ? widget.booksData[index]: null;
           return Card(
             color: Colors.white,
             child: Column(
@@ -33,9 +44,7 @@ class _BooksgridviewcompState extends State<Booksgridviewcomp> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    aboutBook(widget.booksData.length != 0
-                        ? widget.booksData[index]
-                        : null);
+                    aboutBook(bookLen != 0 ? book : null);
                   },
                   child: Container(
                     child: Image.asset(
@@ -57,28 +66,28 @@ class _BooksgridviewcompState extends State<Booksgridviewcomp> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.booksData.length != 0
-                            ? widget.booksData[index].bookName
+                        bookLen != 0
+                            ? book!.bookName
                             : "Null",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             overflow: TextOverflow.ellipsis),
                       ),
                       Text(
-                        widget.booksData.length != 0
-                            ? widget.booksData[index].author
+                        bookLen != 0
+                            ? book!.author
                             : "Null",
                         style: TextStyle(color: Colors.grey, fontSize: 10),
                       ),
                       Row(
                         children: [
                           Text(
-                            "Rs. ${widget.booksData.length != 0 ? widget.booksData[index].discountPrice : null}",
+                            "Rs. ${bookLen != 0 ? book!.discountPrice : null}",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                           Text(
-                            "Rs. ${widget.booksData.length != 0 ? widget.booksData[index].price : null}",
+                            "Rs. ${bookLen != 0 ? book!.price : null}",
                             style: TextStyle(
                                 fontSize: 10,
                                 decoration: TextDecoration.lineThrough),
@@ -88,31 +97,59 @@ class _BooksgridviewcompState extends State<Booksgridviewcomp> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.grey, width: 0.5),
-                                borderRadius: BorderRadius.circular(5)),
-                            width: 35,
-                            height: 35,
-                            child: Icon(
-                              Icons.favorite_outline,
-                              size: 20,
-                              color: Colors.grey,
+                          GestureDetector(
+                            onTap: () async {
+                              bool stat = false;
+                              if(bookLen != 0 && book!.wishList == false) {
+                                stat = await _bookstoreapicall.AddToWishlist(book.id);
+                              } else {
+                                stat = await _bookstoreapicall.RemoveFromWishlist(book!.id);
+                              }
+                              if(stat) {
+                                setState(() {
+                                  widget.booksData.remove(book);
+                                });
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: bookLen != 0 && book!.wishList ? brown : Colors.grey, width: 0.5),
+                                  borderRadius: BorderRadius.circular(5)),
+                              width: 35,
+                              height: 35,
+                              child: bookLen != 0 && book!.wishList 
+                              ? Icon(Icons.favorite, color: brown,) 
+                              : Icon(
+                                Icons.favorite_outline,
+                                size: 20,
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: brown,
-                                border: Border.all(color: brown),
-                                borderRadius: BorderRadius.circular(5)),
-                            width: 95,
-                            height: 35,
-                            child: Center(
-                              child: Text(
-                                "ADD TO BAG",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12),
+                          GestureDetector(
+                            onTap: () async {
+                              bool stat = await _bookstoreapicall!.AddToCart(book!.id);
+                              if(bookLen != 0 && book!.wishList == true) {
+                                await _bookstoreapicall.RemoveFromCart(book!.id);
+                                setState(() {
+                                  widget.booksData.remove(book);
+                                });
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: brown,
+                                  border: Border.all(color: brown),
+                                  borderRadius: BorderRadius.circular(5)),
+                              width: 95,
+                              height: 35,
+                              child: Center(
+                                child: Text(
+                                  "ADD TO BAG",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                ),
                               ),
                             ),
                           )
